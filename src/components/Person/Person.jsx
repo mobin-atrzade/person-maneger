@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Person = ({ firstname, lastname, personDelete }) => {
+const Person = ({ firstname, lastname, Deleted }) => {
     return (
-        <div onClick={personDelete}>
+        <div onClick={Deleted} style={{ cursor: "pointer" }}>
             <p>{`${firstname} ${lastname}`}</p>
         </div>
     )

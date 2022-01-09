@@ -9,7 +9,7 @@ const Persons = ({ persons, personDelete }) => {
                     key={person.id}
                     firstname={person.firstname}
                     lastname={person.lastname}
-                    personDelete={() => personDelete(person.id)}
+                    Deleted={() => personDelete(person.id)}
                 />
             ))}
         </div>
