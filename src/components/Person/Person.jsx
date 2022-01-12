@@ -1,9 +1,12 @@
 import React from 'react'
+import './Person.css';
 
-const Person = ({ firstname, lastname, Deleted }) => {
+const Person = ({ fullname, deleted, changed }) => {
     return (
-        <div onClick={Deleted} style={{ cursor: "pointer" }}>
-            <p>{`${firstname} ${lastname}`}</p>
+        <div className='person'>
+            <p>{fullname}</p>
+            <input type="text" placeholder={fullname} onChange={changed} />
+            <button onClick={deleted}>حذف</button>
         </div>
     )
 }
