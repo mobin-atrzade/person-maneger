@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import Persons from './components/Person/Persons';
 
 export class App extends Component {
+
     state = {
         persons: [],
-        showPersons: false,
+        showPersons: true,
         person: ''
     }
 
@@ -39,18 +40,13 @@ export class App extends Component {
         persons.push(person);
         this.setState({ persons, person: '' });
     }
+
     setPerson = (event) => {
         this.setState({ person: event.target.value });
     }
 
     render() {
         const { persons, showPersons } = this.state;
-
-        const buttonStyle = {
-            padding: "1em",
-            fontFamily: "IRANSans",
-            backgroundColor: "pink"
-        }
 
         let person = null;
 
@@ -64,21 +60,35 @@ export class App extends Component {
             )
         }
         return (
-            <div style={{ textAlign: 'center' }}>
-                <h2>مدیریت کننده اشخاص</h2>
-                <h4>تعداد اشخاص {persons.length} نفر می باشد</h4>
-                <div>
-                    <input
-                        type="text"
-                        placeholder='ساخت شخص جدید'
-                        onChange={this.setPerson}
-                        value={this.state.person}
-                    />
-                    <button onClick={this.handleNewPerson}>اضافه کن</button>
+            <div className="rtl text-center">
+                <div className="alert alert-info">
+                    <h2>مدیریت کننده اشخاص</h2>
                 </div>
-                <button onClick={this.handleShowPerson} style={buttonStyle}>نمایش اشخاص</button>
+                <h5 className="alert alert-light">
+                    تعداد اشخاص <span className='badge badge-pill badge-success'>{persons.length}</span> نفر می باشد
+                </h5>
+                <div className='m-2 p-2'>
+                    <form
+                        className='form-inline justify-content-center'
+                        onSubmit={event => event.preventDefault()}
+                    >
+                        <div className='input-group w-25'>
+                            <input
+                                type="text"
+                                placeholder='اسم بهم بده'
+                                className='form-control'
+                                onChange={this.setPerson}
+                                value={this.state.person}
+                            />
+                            <div className='input-group-prepent'>
+                                <button type='submit' className='btn btn-sm btn-success fa fa-plus ' onClick={this.handleNewPerson} />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <button onClick={this.handleShowPerson} className='btn btn-info'>نمایش اشخاص</button>
                 {person}
-            </div>
+            </div >
         )
     }
 }
