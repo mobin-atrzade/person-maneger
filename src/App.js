@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Persons from './components/Person/Persons';
+import { BsFillPlusSquareFill } from "react-icons/bs";
+
 
 export class App extends Component {
 
@@ -37,8 +39,10 @@ export class App extends Component {
             id: Math.floor(Math.random() * 1000),
             fullname: this.state.person
         }
-        persons.push(person);
-        this.setState({ persons, person: '' });
+        if (person.fullname !== "" && person.fullname !== " ") {
+            persons.push(person);
+            this.setState({ persons, person: '' });
+        }
     }
 
     setPerson = (event) => {
@@ -49,6 +53,11 @@ export class App extends Component {
         const { persons, showPersons } = this.state;
 
         let person = null;
+        let badgeStyle = [];
+
+        if (persons.length >= 3) badgeStyle.push('badge-success')
+        if (persons.length <= 2) badgeStyle.push('badge-warning')
+        if (persons.length <= 1) badgeStyle.push('badge-danger')
 
         if (showPersons) {
             person = (
@@ -65,7 +74,7 @@ export class App extends Component {
                     <h2>مدیریت کننده اشخاص</h2>
                 </div>
                 <h5 className="alert alert-light">
-                    تعداد اشخاص <span className='badge badge-pill badge-success'>{persons.length}</span> نفر می باشد
+                    تعداد اشخاص <span className={`badge badge-pill ${badgeStyle.join(' ')}`}>{persons.length}</span> نفر می باشد
                 </h5>
                 <div className='m-2 p-2'>
                     <form
@@ -80,13 +89,23 @@ export class App extends Component {
                                 onChange={this.setPerson}
                                 value={this.state.person}
                             />
-                            <div className='input-group-prepent'>
-                                <button type='submit' className='btn btn-sm btn-success fa fa-plus ' onClick={this.handleNewPerson} />
+                            <div className='input-group-prepend'>
+                                <button
+                                    type='submit'
+                                    className="btn btn-sm btn-success"
+                                    onClick={this.handleNewPerson}
+                                >
+                                    <BsFillPlusSquareFill />
+                                </button>
                             </div>
                         </div>
                     </form>
                 </div>
-                <button onClick={this.handleShowPerson} className='btn btn-info'>نمایش اشخاص</button>
+                <button
+                    onClick={this.handleShowPerson}
+                    className={showPersons ? "btn btn-info" : "btn btn-danger"}>
+                    نمایش اشخاص
+                </button>
                 {person}
             </div >
         )
