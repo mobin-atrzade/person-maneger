@@ -1,7 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Alert, Badge, Button } from 'react-bootstrap';
 import Persons from './components/Person/Persons';
 import { BsFillPlusSquareFill } from "react-icons/bs";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class App extends Component {
 
@@ -20,6 +22,12 @@ export class App extends Component {
         const persons = [...this.state.persons];
         const filteredPersons = persons.filter(p => p.id !== id);
         this.setState({ persons: filteredPersons });
+
+        const personIndex = persons.findIndex(p => p.id === id);
+        const person = persons[personIndex];
+        toast.error(`${person.fullname} با موفقیت حذف شد`, {
+            position: 'top-right'
+        })
     }
 
     handleNameChange = (event, id) => {
@@ -42,6 +50,10 @@ export class App extends Component {
         if (person.fullname !== "" && person.fullname !== " ") {
             persons.push(person);
             this.setState({ persons, person: '' });
+            //toast
+            toast.success("شخص با موفقیت اضافه شد", {
+                position: 'bottom-right'
+            })
         }
     }
 
@@ -53,11 +65,11 @@ export class App extends Component {
         const { persons, showPersons } = this.state;
 
         let person = null;
-        let badgeStyle = [];
+        let badgeStyle = '';
 
-        if (persons.length >= 3) badgeStyle.push('badge-success')
-        if (persons.length <= 2) badgeStyle.push('badge-warning')
-        if (persons.length <= 1) badgeStyle.push('badge-danger')
+        if (persons.length >= 3) badgeStyle = "success";
+        if (persons.length <= 2) badgeStyle = "warning";
+        if (persons.length <= 1) badgeStyle = "danger";
 
         if (showPersons) {
             person = (
@@ -70,12 +82,12 @@ export class App extends Component {
         }
         return (
             <div className="rtl text-center">
-                <div className="alert alert-info">
+                <Alert variant='info'>
                     <h2>مدیریت کننده اشخاص</h2>
-                </div>
-                <h5 className="alert alert-light">
-                    تعداد اشخاص <span className={`badge badge-pill ${badgeStyle.join(' ')}`}>{persons.length}</span> نفر می باشد
-                </h5>
+                </Alert>
+                <Alert variant="light">
+                    تعداد اشخاص <Badge pill variant={badgeStyle}>{persons.length}</Badge> نفر می باشد
+                </Alert>
                 <div className='m-2 p-2'>
                     <form
                         className='form-inline justify-content-center'
@@ -90,23 +102,26 @@ export class App extends Component {
                                 value={this.state.person}
                             />
                             <div className='input-group-prepend'>
-                                <button
+                                <Button
                                     type='submit'
-                                    className="btn btn-sm btn-success"
+                                    variant="success"
+                                    size='sm'
                                     onClick={this.handleNewPerson}
                                 >
                                     <BsFillPlusSquareFill />
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     </form>
                 </div>
-                <button
+                <Button
                     onClick={this.handleShowPerson}
-                    className={showPersons ? "btn btn-info" : "btn btn-danger"}>
+                    variant={showPersons ? "info" : "danger"}
+                >
                     نمایش اشخاص
-                </button>
+                </Button>
                 {person}
+                <ToastContainer />
             </div >
         )
     }
